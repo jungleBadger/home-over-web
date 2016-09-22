@@ -1,0 +1,10 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: mybluemix.net
+  name: home-over-web
+  host: home-over-web
+  disk_quota: 1024M
+  services:
+  - Plataforma Internet das Coisas-0b
