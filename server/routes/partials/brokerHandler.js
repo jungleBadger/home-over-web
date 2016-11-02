@@ -74,6 +74,7 @@
         });
 
         app.post("/publishCommand", function (req, res) {
+            console.log(req.body);
 
             if (!req.body.id) {
                 return res.status(500).send("ID não encontrado");

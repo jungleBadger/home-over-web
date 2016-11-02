@@ -3,11 +3,31 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>Let's Talk</title>
+    <title>Home Over WEB</title>
     <style> @import url('/styles/main.css');</style>
 
 </head>
 <body>
-    oi
+    <button id="mqtt">VALIDATE</button>
 </body>
+
+<script>
+    (function () {
+        "use strict";
+
+        document.querySelector("#mqtt").addEventListener("click", function () {
+            var r = new XMLHttpRequest();
+
+            r.open("POST", "/publishCommand", true);
+            r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            r.onreadystatechange = function () {
+                if (r.readyState != 4 || r.status != 200) return;
+                alert("Success: " + r.responseText);
+            };
+            r.send("id=BCM27080000000040aa4cb5&type=raspberry&cmd=status");
+        });
+
+    }());
+</script>
 </html>
