@@ -8,14 +8,25 @@
         return {
             createConnection: function () {
                 return new Promise(function (resolve, reject) {
-                    var mqttApp = mqtt.connect(["mqtt://", (localEnv.IOTF_HOST || cloudEnv.services["iotf-service"].credentials.mqtt_host)].join(""), {
-                        clientId: 'a:e8wjfx:a-e8wjfx-hpcxylqxb8',
-                        username: localEnv.IOTF_KEY || cloudEnv.services["iotf-service"].credentials.apiKey,
-                        password: localEnv.IOTF_TOKEN || cloudEnv.services["iotf-service"].credentials.apiToken,
-                        clean: true
-                    });
+                    var appClientConfig = {
+                        "org": "e8wjfx",
+                        "id": "hpcxylqxb8",
+                        "auth-key": localEnv.IOTF_KEY || cloudEnv.services["iotf-service"].credentials.apiKey,
+                        "auth-token": localEnv.IOTF_TOKEN || cloudEnv.services["iotf-service"].credentials.apiToken
+                    };
+                    console.log(appClientConfig);
+                    var mqttApp = new mqtt.IotfApplication(appClientConfig);
+
+                    console.log('herree');
+                    mqttApp.connect();
+
 
                     mqttApp.on('connect', function () {
+                        mqttApp.subscribeToDeviceEvents();
+                        mqttApp.on("deviceEvent", function (deviceType, deviceId, eventType, format, payload) {
+                            console.log("Device Event from :: "+deviceType+" : "+deviceId+" of event "+eventType+" with payload : "+payload);
+                        });
+
                         resolve(mqttApp);
                     });
 

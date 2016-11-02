@@ -11,7 +11,7 @@
         mqttConnection = require('mqtt'),
         mqttClient = require('ibmiotf'),
         iotf_configs = require('./server/configs/ibm_iotf.js')(localEnv, appEnv),
-        iotf_connections = require('./server/helpers/iotf_connections')(mqttConnection, localEnv, appEnv),
+        iotf_connections = require('./server/helpers/iotf_connections')(mqttClient, localEnv, appEnv),
         ejs = require('ejs'),
         compress = require('compression'),
         morgan = require('morgan'),
@@ -19,6 +19,7 @@
         passport = require('passport'),
         io = require('socket.io')(server),
         request = require('request'),
+        authMiddleware = require("./server/helpers/authMiddleware"),
         bodyParser = require('body-parser');
 
 
@@ -39,7 +40,7 @@
     app.engine('html', engines.ejs);
     app.set('view engine', 'html');
 
-    require('./server/routes/index.js')(app, io, passport, iotf_configs, iotf_connections, request);
+    require('./server/routes/index.js')(app, io, passport, iotf_configs, iotf_connections, request, authMiddleware);
 
     app.listen(appEnv.port, '0.0.0.0', function() {
         console.log("server starting on " + appEnv.url);

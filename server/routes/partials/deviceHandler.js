@@ -15,14 +15,8 @@
     module.exports = function (app, iotf_configs, iotf_connections, request) {
 
         app.post('/createDevice', function (req, res) {
-            req.body.deviceObj = {
-                deviceId: req.body.deviceId,
-                userId: req.body.userId || ""
-            };
 
-            req.body.device = {};
-
-            if (!req.body.deviceObj.deviceId) {
+            if (!req.body.deviceId) {
                 return res.status(401).send('Can not operate without a deviceId');
             }
 
@@ -32,15 +26,15 @@
                     url: ['https://e8wjfx.internetofthings.ibmcloud.com/api/v0002/device/types/',
                         iotf_params.type, '/devices'].join(''),
                     payload: {
-                        "deviceId": ['device', 'teste'].join('_'),
-                        "authToken": ['device', 'LACIO'].join(''),
+                        "deviceId": req.body.deviceId,
+                        "authToken": [req.body.deviceId, 'HOW'].join(''),
                         "deviceInfo": {
-                            "serialNumber": req.body.device.serialNo || "123",
-                            "manufacturer": req.body.device.manufacturer || "ONE",
-                            "model": req.body.device.deviceModel || "A0001",
+                            "serialNumber": req.body.serialNo || "123",
+                            "manufacturer": req.body.manufacturer || "Raspberry Pi Foundation",
+                            "model": req.body.deviceModel || "BCM2708",
                             "deviceClass": "IoT device",
                             "description": "Raspberry gateway",
-                            "descriptiveLocation": "Home"
+                            "descriptiveLocation": req.body.location || "Home"
                         },
                         "metadata": {}
                     }
