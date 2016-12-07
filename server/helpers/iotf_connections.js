@@ -2,7 +2,7 @@
  * Created by danielabrao on 9/21/16.
  */
 (function() {
-    'use strict';
+    "use strict";
 
     module.exports = function (mqtt, localEnv, cloudEnv) {
         return {
@@ -14,14 +14,11 @@
                         "auth-key": localEnv.IOTF_KEY || cloudEnv.services["iotf-service"].credentials.apiKey,
                         "auth-token": localEnv.IOTF_TOKEN || cloudEnv.services["iotf-service"].credentials.apiToken
                     };
-                    console.log(appClientConfig);
                     var mqttApp = new mqtt.IotfApplication(appClientConfig);
 
-                    console.log('herree');
                     mqttApp.connect();
 
-
-                    mqttApp.on('connect', function () {
+                    mqttApp.on("connect", function () {
                         mqttApp.subscribeToDeviceEvents();
                         mqttApp.on("deviceEvent", function (deviceType, deviceId, eventType, format, payload) {
                             console.log("Device Event from :: "+deviceType+" : "+deviceId+" of event "+eventType+" with payload : "+payload);
@@ -30,7 +27,7 @@
                         resolve(mqttApp);
                     });
 
-                    mqttApp.on('error', function (error) {
+                    mqttApp.on("error", function (error) {
                         reject(error);
                     });
                 });
@@ -39,7 +36,7 @@
 
                 return new Promise(function (resolve, reject) {
                     if (!mqttInstance) {
-                        reject('Create new MQTT');
+                        reject("Create new MQTT");
                         return;
                     }
 
@@ -53,8 +50,8 @@
             closeConnection: function (mqttInstance) {
                 return new Promise(function (resolve, reject) {
                     mqttInstance.end(false, function cb() {
-                        resolve('Client disconnected');
-                    });
+                        resolve("Client disconnected");
+                    });""
                 });
             }
         }
