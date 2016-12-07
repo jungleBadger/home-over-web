@@ -23,9 +23,6 @@
         bodyParser = require('body-parser');
 
 
-    app.get('/oi', function (req, res) {
-        return res.status(200).send(appEnv);
-    });
     // app.use(express['static'](path.join(__dirname, './server/public/'), { maxAge: 16400000 }));
 
     app.use(express['static'](path.join(__dirname, './server/public/')));
