@@ -43,7 +43,7 @@
                         return;
                     }
 
-                    if (mqttInstance.connected) {
+                    if (mqttInstance.isConnected) {
                         resolve(true);
                     } else {
                         reject(false);
