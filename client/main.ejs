@@ -12,7 +12,10 @@
         <h2>Home Over Web - Console</h2>
     </header>
     <main>
-        <div id="reader-display">
+        <div id="broker-status" class="info-box">
+            <div>Status: <span id="broker"></span> <button id="init-broker">Iniciar</button></div>
+        </div>
+        <div id="reader-display" class="info-box">
             <h4 class="display-header">Leitura de sensores</h4>
             <div class="sensor">
                 <span class="sensor-value">12</span>
@@ -24,6 +27,7 @@
     </main>
 </body>
 
+<script async src="dist/main.min.js"></script>
 <script>
     (function () {
         "use strict";
