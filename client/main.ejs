@@ -17,12 +17,33 @@
         </div>
         <div id="reader-display" class="info-box">
             <h4 class="display-header">Leitura de sensores</h4>
-            <div class="sensor">
-                <span class="sensor-value">12</span>
+            <div>
+                <div class="sensor" id="ultrasonic">
+                    <span class="sensor-value">?</span>
+
+                </div>
+                <pre>Sensor proximidade</pre>
             </div>
 
         </div>
-        <button id="mqtt">VALIDATE</button>
+        <div id="action-display" class="info-box">
+            <h4 class="display-header">Controladores</h4>
+            <div class="sensor">
+                <div class="action-target" id="light0">
+                    <span>Status da luz</span>
+                    <span class="light-value">?</span>
+                    <button class="lightUp" data-light="0">Ligar luz</button>
+                    <button class="lightDown" data-light="0">Desligar luz</button>
+                </div>
+                <div class="action-target" id="light1">
+                    <span>Status da luz</span>
+                    <span class="light-value">?</span>
+                    <button class="lightUp" data-light="1">Ligar luz</button>
+                    <button class="lightDown" data-light="1">Desligar luz</button>
+                </div>
+            </div>
+
+        </div>
 
     </main>
 </body>
@@ -32,19 +53,38 @@
     (function () {
         "use strict";
 
-        document.querySelector("#mqtt").addEventListener("click", function () {
-            var r = new XMLHttpRequest();
+        console.log("aqui");
+        document.querySelectorAll(".lightUp").forEach(function (el){
+            el.addEventListener("click", function () {
 
-            r.open("POST", "/publishCommand", true);
-            r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                var r = new XMLHttpRequest();
 
-            r.onreadystatechange = function () {
-                if (r.readyState != 4 || r.status != 200) return;
-                alert("Success: " + r.responseText);
-            };
-            r.send("id=BCM27080000000040aa4cb5&type=raspberry&cmd=status");
+                r.open("POST", "/publishCommand", true);
+                r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                r.onreadystatechange = function () {
+                    if (r.readyState != 4 || r.status != 200) return;
+                    alert("Success: " + r.responseText);
+                };
+                r.send("id=BCM27080000000040aa4cb5&type=raspberry&cmd=lightUp" + this.getAttribute("data-light"));
+            });
         });
 
+        document.querySelectorAll(".lightDown").forEach(function(el){
+            el.addEventListener("click", function () {
+                var r = new XMLHttpRequest();
+
+                r.open("POST", "/publishCommand", true);
+                r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                r.onreadystatechange = function () {
+                    if (r.readyState != 4 || r.status != 200) return;
+                    alert("Success: " + r.responseText);
+                };
+                r.send("id=BCM27080000000040aa4cb5&type=raspberry&cmd=lightDown" + this.getAttribute("data-light"));
+            });
+
+        });
     }());
 </script>
 </html>

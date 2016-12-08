@@ -9,8 +9,14 @@
 
     module.exports = function (app, iotf_connections, io) {
 
+        io.on('connection', function (socket) {
+            console.log('socket connected');
+            socket.once('disconnect', function () {
+                console.log([io.engine.clientsCount, 'Clients connected after this exit'].join(' '));
+            });
+        });
+
         app.get("/getBrokerStatus", function (req, res) {
-            console.log(Broker);
             if (Broker) {
                 iotf_connections.checkConnection(Broker).then(function successCallback() {
                     return res.status(200).send("Broker online");
@@ -50,8 +56,6 @@
                 return res.status(500).send("Broker não inicializado");
             }
 
-            console.log(req.body);
-
             var topic = [
                 "iot-2",
                 "type", req.body.type || "+",
@@ -60,15 +64,7 @@
                 "fmt", req.body.fmt || "json"
             ].join("/");
 
-            Broker.subscribe(topic, {
-                "qos": 2
-            });
 
-            Broker.on("message", function(topic, payload) {
-                console.log(topic);
-                console.log(JSON.parse(payload));
-                io.emit("payloadReceived", "teste");
-            });
 
             return res.status(200).send([topic, "subscribed"].join(" "));
         });
@@ -96,6 +92,8 @@
             ].join("/");
 
             var message = req.body.message || "Teste MQTT";
+
+            console.log(topic);
 
             Broker.publish(topic, "send payload", {
                 "qos": 2

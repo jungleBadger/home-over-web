@@ -4,7 +4,7 @@
 (function() {
     "use strict";
 
-    module.exports = function (mqtt, localEnv, cloudEnv) {
+    module.exports = function (mqtt, localEnv, cloudEnv, io) {
         return {
             createConnection: function () {
                 return new Promise(function (resolve, reject) {
@@ -18,14 +18,19 @@
 
                     mqttApp.connect();
 
+                    mqttApp.on("deviceEvent", function (deviceType, deviceId, eventType, format, payload) {
+                        console.log("Device Event from :: "+deviceType+" : "+deviceId+" of event "+eventType+" with payload : "+payload);
+                        io.emit("statusReceived", JSON.parse(payload));
+
+                    });
+
                     mqttApp.on("connect", function () {
                         mqttApp.subscribeToDeviceEvents();
-                        mqttApp.on("deviceEvent", function (deviceType, deviceId, eventType, format, payload) {
-                            console.log("Device Event from :: "+deviceType+" : "+deviceId+" of event "+eventType+" with payload : "+payload);
-                        });
 
                         resolve(mqttApp);
                     });
+
+
 
                     mqttApp.on("error", function (error) {
                         reject(error);

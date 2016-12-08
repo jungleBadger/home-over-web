@@ -10,8 +10,6 @@
         path = require('path'),
         mqttConnection = require('mqtt'),
         mqttClient = require('ibmiotf'),
-        iotf_configs = require('./server/configs/ibm_iotf.js')(localEnv, appEnv),
-        iotf_connections = require('./server/helpers/iotf_connections')(mqttClient, localEnv, appEnv),
         ejs = require('ejs'),
         compress = require('compression'),
         morgan = require('morgan'),
@@ -19,6 +17,8 @@
         passport = require('passport'),
         io = require('socket.io')(server),
         request = require('request'),
+        iotf_configs = require('./server/configs/ibm_iotf.js')(localEnv, appEnv),
+        iotf_connections = require('./server/helpers/iotf_connections')(mqttClient, localEnv, appEnv, io),
         authMiddleware = require("./server/helpers/authMiddleware"),
         bodyParser = require('body-parser');
 
@@ -31,6 +31,7 @@
     app.use(compress());
     app.use(morgan('dev'));
     app.use(bodyParser.json()); // get information from html forms
+    app.use(bodyParser.raw());
     app.use(bodyParser.urlencoded({ extended: false }));
 
     app.set('views', __dirname + '/client');
@@ -39,7 +40,7 @@
 
     require('./server/routes/index.js')(app, io, passport, iotf_configs, iotf_connections, request, authMiddleware);
 
-    app.listen(appEnv.port, '0.0.0.0', function() {
+    server.listen(appEnv.port, '0.0.0.0', function() {
         console.log("server starting on " + appEnv.url);
     });
 }());
