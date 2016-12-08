@@ -19,6 +19,7 @@
     "mqtt": "^2.0.0",
     "node-env-file": "^0.1.8",
     "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "request": "^2.75.0",
     "socket.io": "^1.4.8"
