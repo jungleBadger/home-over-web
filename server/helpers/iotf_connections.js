@@ -54,9 +54,11 @@
             },
             closeConnection: function (mqttInstance) {
                 return new Promise(function (resolve, reject) {
-                    mqttInstance.end(false, function cb() {
+                    console.log(mqttInstance);
+                    mqttInstance.close(false, function cb(err) {
+                        console.log(err);
                         resolve("Client disconnected");
-                    });""
+                    });
                 });
             }
         }

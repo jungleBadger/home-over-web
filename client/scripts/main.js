@@ -11,6 +11,7 @@
     var elements = {
         "brokerStatus": document.getElementById("broker"),
         "initBrokerBtn": document.getElementById("init-broker"),
+        "disconnectBrokerBtn": document.getElementById("kill-broker"),
         "ultrasonic": document.getElementById("ultrasonic"),
         "light0": document.querySelector("#light0 .light-value"),
         "light1": document.querySelector("#light1 .light-value"),
@@ -79,9 +80,14 @@
                 factory.initBroker().then(function () {
                     console.log("broker initialized");
                     methods.getBrokerStatus();
-                    factory.subscribeTopic(body).then(function (data) {
-                        console.log(data);
-                    });
+                });
+            });
+
+            elements.disconnectBrokerBtn.addEventListener("click", function () {
+                console.log("here");
+                factory.disconnectBroker().then(function () {
+                    console.log("broker disconnected");
+                    methods.getBrokerStatus();
                 });
             });
         }

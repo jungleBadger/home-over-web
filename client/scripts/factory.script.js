@@ -52,6 +52,26 @@
                     });
             });
         },
+        "disconnectBroker": function () {
+            return new Promise(function (resolve, reject) {
+                window.fetch("/disconnectBroker")
+                    .then(function (response) {
+                        if (response.status === 500) {
+                            return reject({
+                                "status": response.status,
+                                "message": "broker with problems"
+                            });
+                        } else {
+                            return resolve({
+                                "status": response.status,
+                                "message": "broker disconectado"
+                            });
+                        }
+                    }, function (err) {
+                        reject(err);
+                    });
+            });
+        },
         "subscribeTopic": function (body) {
             return new Promise(function (resolve, reject) {
                 fetch("/subscribeTopic", {
