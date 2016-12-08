@@ -12,6 +12,8 @@
         mqttClient = require('ibmiotf'),
         ejs = require('ejs'),
         compress = require('compression'),
+        cookieSession = require("cookie-session"),
+        cookieParser = require("cookie-parser"),
         morgan = require('morgan'),
         server = require('http').createServer(app),
         passport = require('passport'),
@@ -30,14 +32,25 @@
 
     app.use(compress());
     app.use(morgan('dev'));
+
+    app.use(cookieSession({
+        secret: "xamaSecretKey",
+        maxAge: 1000000
+    }));
+
+
+    app.use(cookieParser());
+
     app.use(bodyParser.json()); // get information from html forms
-    app.use(bodyParser.raw());
     app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     app.set('views', __dirname + '/client');
     app.engine('html', engines.ejs);
     app.set('view engine', 'html');
 
+    require('./server/helpers/passport')(passport);
     require('./server/routes/index.js')(app, io, passport, iotf_configs, iotf_connections, request, authMiddleware);
 
     server.listen(appEnv.port, '0.0.0.0', function() {

@@ -11,8 +11,8 @@
                     var appClientConfig = {
                         "org": "e8wjfx",
                         "id": "hpcxylqxb8",
-                        "auth-key": localEnv.IOTF_KEY || cloudEnv.services["iotf-service"].credentials.apiKey,
-                        "auth-token": localEnv.IOTF_TOKEN || cloudEnv.services["iotf-service"].credentials.apiToken
+                        "auth-key": localEnv.IOTF_KEY || cloudEnv.services["iotf-service"][0].credentials.apiKey,
+                        "auth-token": localEnv.IOTF_TOKEN || cloudEnv.services["iotf-service"][0].credentials.apiToken
                     };
                     var mqttApp = new mqtt.IotfApplication(appClientConfig);
 

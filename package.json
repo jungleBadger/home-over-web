@@ -10,6 +10,8 @@
     "cfenv": "1.0.x",
     "compression": "^1.6.2",
     "consolidate": "^0.14.1",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-alpha.2",
     "ejs": "^2.5.2",
     "express": "4.13.x",
     "ibmiotf": "^0.2.23",
