@@ -29,7 +29,6 @@
         });
 
         app.get("/disconnectBroker", function (req, res) {
-            console.log("aquiiii");
             iotf_connections.closeConnection(Broker).then(function successCallback() {
                 Broker = "";
                 return res.status(200).send("Broker disconnected");

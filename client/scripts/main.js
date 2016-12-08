@@ -64,10 +64,15 @@
                 console.log(data);
                 elements.brokerStatus.style.backgroundColor = "green";
                 elements.brokerStatus.innerHTML = data.message;
+                elements.initBrokerBtn.style.display = "none";
+                elements.disconnectBrokerBtn.style.display = "block";
             }, function (errObj) {
                 elements.brokerStatus.style.backgroundColor = "red";
                 elements.brokerStatus.innerHTML = errObj.message;
                 console.log(errObj);
+                elements.disconnectBrokerBtn.style.display = "none";
+                elements.initBrokerBtn.style.display = "block";
+
             });
         },
         "init": function () {
